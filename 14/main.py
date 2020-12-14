@@ -11,6 +11,7 @@ def get_mem_loc(inst):
     # print(inst)
     num_split = inst.split('[')
     num_back_split = num_split[1].split(']')
+    # print(num_back_split)
     return num_back_split[0]
 
 def get_bit_str(num):
@@ -129,8 +130,29 @@ def get_masked_addresses(mask, add):
 #                 num_x += 1
 #         num_perms = 
 
+def get_int_addresses(masked_add):
+    adds = []
+    curr_vals = [0]
+    for i, c in enumerate(reversed(masked_add)):
+        # print(c)
+        new_curr_vals = []
+        if c == 'X':
+            for v in curr_vals:
+                new_curr_vals.append(v)
+                new_curr_vals.append(v + 2**i)
+            curr_vals = new_curr_vals
+        elif c == '1':
+            for v in curr_vals:
+                new_curr_vals.append(v + 2**i)
+            curr_vals = new_curr_vals
+        elif c == '0':
+            continue
+        else:
+            assert False
+    return curr_vals
+
 def main():
-    # print(get_bit_str(8))
+    # print(get_bit_str(42))
     # print(back_to_int('00000000000001001'))
 
     file = open('input.txt', 'r')
@@ -150,7 +172,8 @@ def main():
         
         address = get_mem_loc(inst)
         val = int(inst2)
-        bit_str = get_bit_str(val)
+        # bit_str = get_bit_str(val)
+        bit_str = get_bit_str(int(address))
         long_bit_str = make_bit_str_32bits(bit_str)
         print('    ', long_bit_str)
         
@@ -160,18 +183,23 @@ def main():
         # # print(back_to_int(mask_long_bit_str))
         # add_space[address] = back_to_int(mask_long_bit_str)
 
-        curr_perm = get_addresses(curr_mask, long_bit_str)
-        # masked_add = get_masked_addresses(curr_mask, long_bit_str)
+        # curr_perm = get_addresses(curr_mask, long_bit_str)
+        masked_add = get_masked_addresses(curr_mask, long_bit_str)
         # add_space[masked_add] = val
-        for c in curr_perm:
-            # print('----', c)
+        # for c in curr_perm:
+        #     # print('----', c)
 
-            int_address = back_to_int(c)
-            add_space[int_address] = val
-        #     # print('set {} to {}'.format(val, int_address))
+        #     int_address = back_to_int(c)
+        #     add_space[int_address] = val
+        # #     # print('set {} to {}'.format(val, int_address))
 
         # import pdb
         # pdb.set_trace()
+
+        int_adds = get_int_addresses(masked_add)
+        print(int_adds)
+        for i in int_adds:
+            add_space[i] = val
             
     # for k in add_space:
     #     print(k, add_space[k])
