@@ -4,15 +4,7 @@
 #include <vector>
 #include <cmath>
 #include <unordered_map>
-
-// static std::pair<Instructions, long> split_instructions(
-//   const std::string& line)
-// {
-//   std::size_t mag_len = line.size() - 1;
-//   return std::make_pair(
-//     str_to_instruction(line.substr(0, 1)),
-//     atoi(line.substr(1, mag_len).c_str()));
-// }
+#include <chrono>
 
 std::vector<long> split_numbers(std::string nums_str)
 {
@@ -27,19 +19,37 @@ std::vector<long> split_numbers(std::string nums_str)
   return longs;
 }
 
+// long update_and_get_next(
+//   long spoken,
+//   long turn,
+//   std::unordered_map<long, long>& mem)
+// {
+//   auto it = mem.find(spoken);
+//   if (it == mem.end())
+//   {
+//     mem[spoken] = turn;
+//     return 0;
+//   }
+  
+//   long prev_turn = it->second;
+//   long age = turn - prev_turn;
+//   mem[spoken] = turn;
+//   return age;
+// }
+
 long update_and_get_next(
   long spoken,
   long turn,
-  std::unordered_map<long, long>& mem)
+  std::vector<long>& mem)
 {
-  auto it = mem.find(spoken);
-  if (it == mem.end())
+  long val = mem[spoken];
+  if (val == -1)
   {
     mem[spoken] = turn;
     return 0;
   }
-  
-  long prev_turn = it->second;
+
+  long prev_turn = val;
   long age = turn - prev_turn;
   mem[spoken] = turn;
   return age;
@@ -58,7 +68,9 @@ int main()
   // std::vector<long> longs = {0, 3, 6};
   // std::vector<long> longs = {1, 3, 3};
 
-  std::unordered_map<long, long> mem;
+  // std::unordered_map<long, long> mem;
+  std::vector<long> mem(30000000, -1);
+
   long curr_turn = 1;
   long next = -1;
 
