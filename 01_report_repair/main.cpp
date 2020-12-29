@@ -3,6 +3,8 @@
 #include <vector>
 #include <fstream>
 
+#include "../utils.hpp"
+
 int main(int argc, char** argv)
 {
   std::ifstream file("input.txt");

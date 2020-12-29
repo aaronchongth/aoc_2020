@@ -1,3 +1,0 @@
-/home/aaron/scratch/aoc_2020/01_report_repair/build/CMakeFiles/rebuild_cache.dir
-/home/aaron/scratch/aoc_2020/01_report_repair/build/CMakeFiles/edit_cache.dir
-/home/aaron/scratch/aoc_2020/01_report_repair/build/CMakeFiles/report_repair.dir
